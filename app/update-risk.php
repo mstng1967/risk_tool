@@ -73,13 +73,7 @@ if ($conn->connect_error) {
             echo "<tr><td colspan='10'>No hay datos disponibles</td></tr>";
         }
     }
-?>
 
-<?php
-
-
-?>
-<?php
 
 // Insertar datos si se ha enviado el formulario
 //if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -103,7 +97,7 @@ if ($conn->connect_error) {
 //
 //
 ?>
-
+<a href="Products2.php" class="btn btn-warning">Volver a la tabla general</a>
 
 <?php
 $conn->close();
