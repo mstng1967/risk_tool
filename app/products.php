@@ -15,8 +15,8 @@ $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
 
 ## Custom Field value
-$searchBy_financial_quarter = $_POST['searchBy_financial_quarter'];
-$searchByfinancial_year = $_POST['searchByfinancial_year'];
+$searchBy_processproject = $_POST['searchBy_processproject'];
+$searchBy_team = $_POST['searchBy_team'];
 $searchByName = $_POST['searchByName'];
 ## Search 
 
@@ -24,19 +24,18 @@ $searchQuery = " ";
 if($searchByName != ''){
     $searchQuery .= " and (product_name  like '%".$searchByName."%') ";
 }
-if($searchByfinancial_year != ''){
-    $searchQuery .= " and (financial_year ='".$searchByfinancial_year."' ) ";
+if($searchBy_team != ''){
+    $searchQuery .= " and (team ='".$searchBy_team."' ) ";
 }
-if($searchBy_financial_quarter != ''){
-    $searchQuery .= " and (financial_quarter='".$searchBy_financial_quarter."') ";
+if($searchBy_processproject != ''){
+    $searchQuery .= " and (processproject='".$searchBy_processproject."') ";
 }
 
 if($searchValue != ''){
-	$searchQuery .= " and (user_id like '%".$searchValue."%' or 
-    financial_year like '%".$searchValue."%' or    
-    product_name like '%".$searchValue."%' or 
-    uploded_on like '%".$searchValue."%' or 
-    financial_quarter like'%".$searchValue."%' ) ";
+	$searchQuery .= " and (risk_id like '%".$searchValue."%' or 
+    team like '%".$searchValue."%' or    
+    product like '%".$searchValue."%' or 
+    processproject like'%".$searchValue."%' ) ";
 }
 
 ## Total number of records without filtering
@@ -50,30 +49,47 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
 ##Esta parte la he hecho yo, es para filtrar por los proyectos o equipo del usuario
-$nameda = $_SESSION["username"];  
-$sql = "SELECT * FROM users WHERE username = '$nameda'";
-$resulta = $con->query($sql);
-if ($resulta->num_rows > 0) {
-    while($aba = $resulta->fetch_assoc()) {
-        #echo $aba['team'];
-        $prod = $aba['team'];
-    }
-}
+##$nameda = $_SESSION["username"];  
+##$sql = "SELECT * FROM users WHERE username = '$nameda'";
+##$resulta = $con->query($sql);
+##if ($resulta->num_rows > 0) {
+##    while($aba = $resulta->fetch_assoc()) {
+##        #echo $aba['team'];
+##        $prod = $aba['team'];
+##    }
+##}
 
-## Fetch records Aqui mas de lo mismo el production unit en un futuro deberia ser el team
+## Fetch records Aqui mas de lo mismo el production unit en un futuro deberia ser el team AND production_unit = $prod
 $empQuery = "select * from mis_production WHERE 1 ".$searchQuery." AND production_unit = $prod order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
 $empRecords = mysqli_query($con, $empQuery);
 $data = array();
 
 while ($row = mysqli_fetch_assoc($empRecords)) {
     $data[] = array(
-    		"user_id"=>$row['user_id'],
-    		"financial_year"=>$row['financial_year'],
-    		"financial_quarter"=>$row['financial_quarter'],
-    		"product_name"=>$row['product_name'],
-    		"production_unit"=>$row['production_unit'],
-            "total_production"=>$row['total_production'],
-    		"uploded_on"=>$row['uploded_on']
+    		"risk_id"=>$row['risk_id'],
+	        "date"=>$row['date'],
+    		"product"=>$row['product'],
+    		"process_project"=>$row['process_project'],
+    		"failure_mode"=>$row['failure_mode'],
+    		"failure_effect"=>$row['failure_effect'],
+                "SEV_inherent"=>$row['SEV_inherent'],
+    		"SEV"=>$row['SEV'],
+	        "failure_mode_cause"=>$row['failure_mode_cause'],
+	        "stakeholders_cause"=>$row['stakeholders_cause'],
+	        "OCC_inherent"=>$row['OCC_inherent'],
+	        "OCC"=>$row['OCC'],
+	        "current_control"=>$row['current_control'],
+	        "preventive_control"=>$row['preventive_control'],
+	        "detective_control"=>$row['detective_control'],
+	        "corrective_control"=>$row['corrective_control'],
+	        "DET"=>$row['DET'],
+	        "bottleneck"=>$row['bottleneck'],
+	        "RPN_inherent"=>$row['RPN_inherent'],
+	        "RPN"=>$row['RPN'],
+	        "risk_level"=>$row['risk_level'],
+	        "stakeholders_affected"=>$row['stakeholders_affected'],
+	        "acceptable"=>$row['acceptable'],
+	        "actions"=>$row['actions']	    
     	);
 }
 
