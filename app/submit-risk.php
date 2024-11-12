@@ -87,6 +87,7 @@ if ($conn->connect_error) {
             </tr>
         </table>
     </form>
+<a href="Products2.php" class="btn btn-warning">Volver a la tabla general</a>
 </body>
 </html>
 <?php
