@@ -44,27 +44,22 @@ include 'config.php';
 			<tr>
                 <td>
                     <input type='text' id="searchByName"  class="form-control " placeholder='Enter name'></td><td>
-                    <select id="searchBy_financial_quarter" class="form-control " required="">
+                    <select id="searchBy_processproject" class="form-control " required="">
                         <option value="">All</option>
-                        <option value="1"> Q1 - April - June </option>
-                        <option value="2"> Q2 - July - September </option>
-                        <option value="3"> Q3 - October - December </option>
-                        <option value="4"> Q4 - January - March </option>
+                        <option value="Proyecto1"> Proyecto1 </option>
+                        <option value="Proyecto2"> Proyecto2 </option>
+                        <option value="Proyecto3"> Proyecto3 </option>
+                        <option value="Proyecto4"> Proyecto4 </option>
                     </select>
                 </td>
                 <td>
-                    <select id='searchByfinancial_year' class="form-control ">
+                    <select id='searchBy_team' class="form-control ">
 
                         <option value="">All</option>
-                        <option value="2008-2009"> 2008-2009 </option>
-                        <option value="2009-2010"> 2009-2010 </option>
-                        <option value="2010-2011"> 2010-2011 </option>
-                        <option value="2011-2012"> 2011-2012 </option>
-                        <option value="2012-2013"> 2012-2013 </option>
-                        <option value="2013-2014"> 2013-2014 </option>
-                        <option value="2014-2015"> 2014-2015 </option>
-                        <option value="2015-2016"> 2015-2016 </option>
-                       
+                        <option value="Equipo1"> Equipo1 </option>
+                        <option value="Equipo2"> Equipo2 </option>
+                        <option value="Equipo3"> Equipo3 </option>
+                        <option value="Equipo4"> Equipo4 </option>                       
                     </select>
 
                 </td>
@@ -77,13 +72,30 @@ include 'config.php';
         <table id='product' class='display dataTable hoverable  table-striped'>
             <thead>
                 <tr>
-                    <th>User ID</th>
-                    <th>Financial Year</th>
-                    <th>Financial Quarter</th>
-                    <th>Product Name</th>
-                    <th>Production Unit</th>
-                    <th>Total Production</th>
-                    <th>Uploded On</th>
+                    <th>ID del Riesgo</th>
+                    <th>Fecha</th>
+                    <th>Producto</th>
+                    <th>Proceso/Proyecto</th>
+                    <th>Modo de fallo</th>
+                    <th>Efecto de fallo</th>
+                    <th>SEV Inherente</th>
+                    <th>SEV</th>
+                    <th>Causas del modo de fallo</th>
+                    <th>Stakeholders causantes del riesgo</th>
+                    <th>OCC Inherente</th>
+                    <th>OCC</th>
+                    <th>Controles actuales</th>
+                    <th>Control preventivo</th>
+                    <th>Control detectivo</th>
+                    <th>Control correctivo</th>
+                    <th>DET</th>
+                    <th>Bottleneck</th>
+                    <th>RPN Inherente</th>
+                    <th>RPN</th>
+                    <th>Nivel de riesgo</th>
+                    <th>Stakeholders afectados por la materialización del riesgo</th>
+                    <th>¿Aceptable?</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
 
@@ -132,28 +144,45 @@ include 'config.php';
                     'url': 'products.php',
                     'data': function (data) {
                         
-                        var searchByfinancial_year = $('#searchByfinancial_year').val();
-                        var searchBy_financial_quarter = $('#searchBy_financial_quarter').val(); 
+                        var searchBy_team = $('#searchBy_team').val();
+                        var searchBy_processproject = $('#searchBy_processproject').val();
 						var searchByName=$('#searchByName').val();
 
                        
-                        data.searchByfinancial_year = searchByfinancial_year;
-                        data.searchBy_financial_quarter = searchBy_financial_quarter;
+                        data.searchBy_team = searchBy_team;
+                        data.searchBy_processproject = searchBy_processproject;
 						data.searchByName = searchByName;
                     }
                 },
                 'columns': [
-                    { data: 'user_id' },
-                    { data: 'financial_year' },
-                    { data: 'financial_quarter' },
-                    { data: 'product_name', 
+                    { data: 'risk_id',
                         "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                            $(nTd).html("<a href='update-risk.php?i="+oData.product_name+"'>"+oData.product_name+"</a>");
-                        }
-                    },
-                    { data: 'production_unit' },
-                    { data: 'total_production' },
-                    { data: 'uploded_on' },
+                            $(nTd).html("<a href='edit-risk.php?i="+oData.risk_id+"'>"+oData.risk_id+"</a>");
+			}
+        	    },
+                    { data: 'date' },
+                    { data: 'product' },
+                    { data: 'process_project' },
+                    { data: 'failure_mode' },
+                    { data: 'failure_effect' }, 
+                    { data: 'SEV_inherent' },
+                    { data: 'SEV' },
+                    { data: 'failure_mode_cause' },
+	            { data: 'stakeholders_cause' },
+        	    { data: 'OCC_inherent' },
+        	    { data: 'OCC' },
+        	    { data: 'current_control' },
+        	    { data: 'preventive_control' },
+        	    { data: 'detective_control' },
+        	    { data: 'corrective_control' },
+        	    { data: 'DET' },
+        	    { data: 'bottleneck' },
+        	    { data: 'RPN_inherent' },
+        	    { data: 'RPN' },
+        	    { data: 'risk_level' },
+        	    { data: 'stakeholders_affected' },
+        	    { data: 'acceptable' },
+        	    { data: 'actions' },
                 ]
                 
             });
@@ -161,10 +190,10 @@ include 'config.php';
            $('#searchByName').keyup(function () {
                 dataTable.draw();
             }); 
-            $('#searchBy_financial_quarter').change(function () {
+            $('#searchBy_processproject').change(function () {
                 dataTable.draw();
             });
-            $('#searchByfinancial_year').change(function () {
+            $('#searchBy_team').change(function () {
                 dataTable.draw();
             });
         });
