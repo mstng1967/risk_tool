@@ -9,7 +9,7 @@ server with default setting (user 'root' with no password) */
 $host = "mysql"; /* Host name */
 $user = "root"; /* User */
 $password = "super-secret-password"; /* Password */
-$dbname = "risk-tool-db"; /* Database name */
+$dbname = "risktooldb"; /* Database name */
  
 /* Attempt to connect to MySQL database */
 #$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
